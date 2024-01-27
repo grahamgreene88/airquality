@@ -5,7 +5,7 @@ import pandas as pd
 def api_pull():
     """This function pulls data from the OpenAQ API to obtain the pollutant, value, update time, and unit.
     
-Arges:
+Args:
     None.
 
 Returns:
@@ -40,6 +40,5 @@ Raises:
 
     aq_data = json.loads(response.text)
     aq_df = pd.json_normalize(aq_data['results'], record_path=['measurements'])
-    aq_df
-
+    return aq_df
 
