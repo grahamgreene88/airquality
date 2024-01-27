@@ -42,4 +42,4 @@ Raises:
     aq_df = pd.json_normalize(aq_data['results'], record_path=['measurements'])
     aq_df
 
-   
+
