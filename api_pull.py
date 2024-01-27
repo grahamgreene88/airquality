@@ -1,6 +1,8 @@
 import requests
 import json
 import pandas as pd
+import logging
+from requests import HTTPError, Timeout, RequestException
 
 def api_pull():
     """This function pulls data from the OpenAQ API to obtain the pollutant, value, update time, and unit.
@@ -25,18 +27,18 @@ Raises:
     session.headers.update(headers)
 
     # try-except blocks for robust error handling and logging
-    # try:
-    response = session.get(url, headers=headers, timeout=15)
-    # response.raise_for_status()
+    try:
+        response = session.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
     
-    # except HTTPError as http_err:
-    #     logger.error(f"HTTP error occurred: {http_err}")
+    except HTTPError as http_err:
+        logger.error(f"HTTP error occurred: {http_err}")
         
-    # except Timeout:
-    #     logger.error("Request timed out after 15 seconds.")
+    except Timeout:
+        logger.error("Request timed out after 15 seconds.")
         
-    # except RequestException as request_err:
-    #     logger.error("Request error occurred: {request_err}")
+    except RequestException as request_err:
+        logger.error("Request error occurred: {request_err}")
 
     aq_data = json.loads(response.text)
     aq_df = pd.json_normalize(aq_data['results'], record_path=['measurements'])
