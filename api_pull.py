@@ -4,11 +4,11 @@ import pandas as pd
 import logging
 from requests import HTTPError, Timeout, RequestException
 
-def api_pull():
+def pull(API_KEY):
     """This function pulls data from the OpenAQ API to obtain the pollutant, value, update time, and unit.
     
 Args:
-    None.
+    API_KEY from .env file.
 
 Returns:
     Dataframe with 4 columns and 2 rows. One row for each pollutant.
@@ -20,7 +20,7 @@ Raises:
     url = "https://api.openaq.org/v2/latest/498?limit=100&page=1&offset=0&sort=asc"
 
     headers = {
-        "X-API-Key": "5eb79066433eb416b9a688101dfba9b40f44ffbbd58f913d2f8aafd4867395e5",
+        "X-API-Key": API_KEY,
         "accept": "application/json"}
 
     session = requests.Session()
