@@ -1,3 +1,5 @@
+import pandas as pd
+
 def clean_df(df):
     """cleans air quality dataframe into desired format.
 
@@ -11,5 +13,11 @@ def clean_df(df):
     pivot_df.insert(1, 'o3_unit', 'ppm')
     pivot_df['pm25_unit'] = ['µg/m³']
     final_df = pivot_df.reset_index()
+    # Changing lastupdated column name to date
+    final_df.rename(columns={'lastUpdated': 'date'}, inplace=True)
+    # Changing date column to datetime data type
+    final_df['date'] = pd.to_datetime(final_df['date'])
     return final_df
+    
+    
     
