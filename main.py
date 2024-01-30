@@ -5,12 +5,14 @@ import logging
 import os
 import psycopg2
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
 
 # Importing custom scripts
 from logger import config_logger
 from api_pull import pull
 from clean import clean_df
 from database import create_table, insert_data
+from database_alc import get_connection
 
 # Loading hidden environment variables
 load_dotenv()
@@ -26,24 +28,12 @@ config_logger()
 
 # Perform API pull
 df = pull(API_KEY)
-# Cleaning pulled dataframe
+# Clean pulled dataframe
 final_df = clean_df(df)
 
-# Setup PostrgeSQL Database connection
-db_connection = psycopg2.connect(
-    dbname=DB_NAME,
-    user=DB_USERNAME,
-    password=DB_PASSWORD,
-    host=DB_HOST,
-    port=DB_PORT)
-cursor = db_connection.cursor()
+# Connect to postgresql database
+engine = get_connection(DB_USERNAME, DB_PASSWORD,
+                        DB_HOST, DB_PORT, DB_NAME)
+# Write data to table in postgresql database
+final_df.to_sql('air_quality', engine, if_exists='append', index=False)
 
-# Create Table in database
-create_table(db_connection, cursor)
-
-# Insert data into database
-insert_data(final_df, db_connection, cursor)
-
-# Close the cursor and database connection
-cursor.close()
-db_connection.close()
