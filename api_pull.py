@@ -17,7 +17,7 @@ Raises:
     HTTPError, Timeout and RequestException
     """
 
-    url = "https://api.openaq.org/v2/latest/498?limit=100&page=1&offset=0&sort=asc"
+    url = "https://api.openaq.org/v2/latest/498?limit=1000&page=1&offset=0&sort=asc"
 
     headers = {
         "X-API-Key": API_KEY,
