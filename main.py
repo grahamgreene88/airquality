@@ -28,6 +28,7 @@ config_logger()
 
 # Perform API pull
 df = pull(API_KEY)
+
 # Clean pulled dataframe
 final_df = clean_df(df)
 

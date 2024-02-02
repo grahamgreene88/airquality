@@ -13,12 +13,8 @@ def database_pull(DB_USERNAME, DB_PASSWORD,
     get_new_data_query = """
         SELECT
             datetime,
-            no2,
-            no2_unit,
-            o3,
-            o3_unit,
-            pm25,
-            pm25_unit
+            parameter,
+            value
         FROM public.air_quality
         ORDER BY datetime DESC;
     """

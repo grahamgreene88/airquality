@@ -16,9 +16,8 @@ DB_PASSWORD     =   os.getenv("DB_PASSWORD")
 DB_HOST         =   os.getenv("DB_HOST")
 DB_PORT         =   os.getenv("DB_PORT")
 
-new_data_df = database_pull(DB_USERNAME, DB_PASSWORD,
+pol_df = database_pull(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME)
-new_data_df
 
 # Set up streamlit dashboard
 st.set_page_config(
@@ -33,10 +32,24 @@ st.title("Air Quality Monitoring - Downtown Ottawa")
 with st.sidebar:
     st.title("Air Quality Dashboard 😶‍🌫️")
     
-    # pollutant_list = list(...)
+    pol_list = list(pol_df.parameter.unique())
     
+    selected_pol = st.selectbox('Select a pollutant', pol_list, index=1)
+    df_selected_pol = pol_df[pol_df.parameter == selected_pol]
     
+fig_line = px.line(df_selected_pol,
+        x='datetime',
+        y='value',
+        labels={'value': 'Pollutant Concentration'},
+        width=1000,
+        height=500)
+# fig_line.update_traces(patch=)
 
+# Dashboard layout
+col = st.columns((5, 3), gap='medium')
 
+with col[0]:
+    st.markdown('### Past Week')
+    st.plotly_chart(fig_line, use_container_width=True, width = 1000, height=500)
 
 
