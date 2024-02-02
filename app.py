@@ -23,11 +23,19 @@ new_data_df
 # Set up streamlit dashboard
 st.set_page_config(
     page_title = "Air Quality Dashboard",
-    layout="wide"
-)
+    page_icon =  '😶‍🌫️',
+    layout="wide",
+    initial_sidebar_state="expanded")
 
-# Add main title
-st.title("Air Quality Monitoring - Ottawa, ON")
+# Add dashboard title
+st.title("Air Quality Monitoring - Downtown Ottawa")
+
+with st.sidebar:
+    st.title("Air Quality Dashboard 😶‍🌫️")
+    
+    # pollutant_list = list(...)
+    
+    
 
 
 

@@ -34,6 +34,7 @@ final_df = clean_df(df)
 # Connect to postgresql database
 engine = get_connection(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME)
+
 # Write data to table in postgresql database
-final_df.to_sql('air_quality', engine, if_exists='append', index=False)
+final_df.to_sql('air_quality', engine, if_exists='replace', index=False)
 

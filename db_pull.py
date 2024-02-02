@@ -12,14 +12,15 @@ def database_pull(DB_USERNAME, DB_PASSWORD,
     # Query for air quality data from posgtreSQL
     get_new_data_query = """
         SELECT
-            date,
+            datetime,
+            no2,
+            no2_unit,
             o3,
             o3_unit,
             pm25,
             pm25_unit
         FROM public.air_quality
-        ORDER BY date DESC
-        Limit 1;
+        ORDER BY datetime DESC;
     """
     
     # Read database data into dataframe
