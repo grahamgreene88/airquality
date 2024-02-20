@@ -56,4 +56,18 @@ with col[0]:
     st.markdown('### Past Week')
     st.plotly_chart(fig_line, use_container_width=True, width = 1000, height=500)
 
+# Add current air quality index for selected pollutant
+with col[1]:
+    st.metric(label='Air Quality Index', )
+
+if selected_pol = "Ozone (O3)":
+    if df_selected_pol.iloc[1, 2] > 5:
+        aqi = 'Low'
+elif selected_pol = "Nitrogen dioxide (NO2)":
+    
+else:
+    
+    
+
+
 
