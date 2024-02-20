@@ -36,11 +36,15 @@ with st.sidebar:
     
     selected_pol = st.selectbox('Select a pollutant', pol_list, index=1)
     df_selected_pol = pol_df[pol_df.parameter == selected_pol]
-    
+    selected_unit = str(df_selected_pol.unit.unique())
+
+y_axis_name = 'Concentration' + ' ' + '(' + selected_unit + ')'
+
 fig_line = px.line(df_selected_pol,
         x='datetime',
         y='value',
-        labels={'value': 'Pollutant Concentration'},
+        labels={'value': y_axis_name,
+                'datetime': 'Date'},
         width=1000,
         height=500)
 # fig_line.update_traces(patch=)

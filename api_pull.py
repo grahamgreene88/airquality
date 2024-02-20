@@ -31,8 +31,6 @@ def pull(API_KEY):
     # Insert date_from and date_to into API url
     url = f"https://api.openaq.org/v2/measurements?date_from={quote(date_from)}&date_to={quote(date_to)}&limit=1000&page=1&offset=0&sort=desc&has_geo=true&parameter=o3&parameter=pm25&parameter=no2&location_id=1275379&order_by=datetime"
 
-
-
     headers = {
         "X-API-Key": API_KEY,
         "accept": "application/json"}

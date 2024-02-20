@@ -14,7 +14,8 @@ def database_pull(DB_USERNAME, DB_PASSWORD,
         SELECT
             datetime,
             parameter,
-            value
+            value,
+            unit
         FROM public.air_quality
         ORDER BY datetime DESC;
     """
