@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import plotly.express as px
 
 from db_pull import database_pull
+from aq_index import calculate_AQHI
 
 # Loading hidden environment variables
 load_dotenv()
@@ -56,16 +57,30 @@ with col[0]:
     st.markdown('### Past Week')
     st.plotly_chart(fig_line, use_container_width=True, width = 1000, height=500)
 
-# Add current air quality index for selected pollutant
-with col[1]:
-    st.metric(label='Air Quality Index', )
+# # Add current air quality index for selected pollutant
+# with col[1]:
+#     st.metric(label='Air Quality Index', )
 
-if selected_pol = "Ozone (O3)":
-    if df_selected_pol.iloc[1, 2] > 5:
-        aqi = 'Low'
-elif selected_pol = "Nitrogen dioxide (NO2)":
+# if selected_pol = "Ozone (O3)":
+#     if df_selected_pol.iloc[1, 2] > 5:
+#         aqi = 'Low'
+# elif selected_pol = "Nitrogen dioxide (NO2)":
     
-else:
+# else:
+current_no2 = pol_df[pol_df.parameter == 'Nitrogen dioxide (NO2)'].iloc[0]['value']
+current_o3 = pol_df[pol_df.parameter == 'Ozone (O3)'].iloc[0]['value']
+current_pm25 = pol_df[pol_df.parameter == 'Particulate matter (PM2.5)'].iloc[0]['value']
+
+AQHI = calculate_AQHI(current_no2, current_o3, current_pm25)
+if AQHI <= 3:
+    health_risk = 'Low'
+elif AQHI > 3 and AQHI <= 6:
+    health_risk = 'Moderate'
+elif AQHI > 6 and AQHI <= 10:
+    health_risk = 'High'
+elif AQHI > 10:
+    health_risk = 'Very Hgh'
+    
     
     
 
