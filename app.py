@@ -47,6 +47,16 @@ selected_unit = str(df_selected_pol.unit.unique())
 #     df_selected_pol = pol_df[pol_df.parameter == selected_pol]
 #     selected_unit = str(df_selected_pol.unit.unique())
 
+# Setup time filter
+timeframe_list = ['Past week', 'Past 3 days', 'Past 24 hours']
+selected_timeframe = st.selectbox("Select a timeframe", timeframe_list, index=1)
+if selected_timeframe == 'Past week':
+    df_selected_pol = df_selected_pol
+if selected_timeframe == 'Past 3 days':
+    df_selected_pol = 
+    
+
+# air quality concentration chart over time
 y_axis_name = 'Concentration' + ' ' + '(' + selected_unit + ')'
 
 fig_line = px.line(df_selected_pol,
@@ -61,6 +71,7 @@ fig_line = px.line(df_selected_pol,
 # Dashboard layout
 col = st.columns((12, 3), gap='medium')
 
+# Plot air quality chart in first column
 with col[0]:
     st.markdown('### Past Week')
     st.plotly_chart(fig_line, use_container_width=True, width = 1000, height=500)
@@ -112,18 +123,21 @@ elif AQHI > 10:
     health_risk = 'Very High'
     health_color = '#000000'
 
-# Populate second column
+# Populate second column with metrics
 with col[1]:
     if selected_pol == "Particulate matter (PM2.5)":
         display_text = "PM2.5"
         display_pol = current_pm25
+        display_unit = "µg/m³"
     if selected_pol == "Ozone (O3)":
         display_text = "O3"
         display_pol = current_o3
-    else:
+        display_unit = "ppb"
+    if selected_pol == "Nitrogen dioxide (NO2)":
         display_text = "NO2"
         display_pol = current_no2
-    st.metric(label=f"Current {display_text} concentration:", value=display_pol)
+        display_unit = "ppb"
+    st.metric(label=f"Current {display_text} concentration:", value=f"{display_pol} {display_unit}")
     style_metric_cards(border_left_color="#FFFFFF", background_color="#DCDCDC")
     
 with col[1]:  
@@ -134,8 +148,31 @@ with col[1]:
     # txt_box.text_area("Logging: ",txt, height = 500)
     style_metric_cards(border_left_color=health_color)
     
-    
-    
+# Creating dataframe with health messages
+health_messages_dict = {
+    'Health Risk': ['Low', 'Moderate', 'High', 'Very High'],
+    'AQHI': ['1-3', '4-6', '7-10', 'Above 10'],
+    'At Risk Population': ['Enjoy your usual outdoor activities.', 
+                           'Consider reducing or rescheduling strenuous activities outdoors if you are experiencing symptoms.',
+                           'Reduce or reschedule strenuous activities outdoors. Children and the elderly should also take it easy.', 
+                           'Avoid strenuous activities outdoors. Children and the elderly should also avoid outdoor physical exertion.'],
+    'General Population': ['Ideal air quality for outdoor activities.', 
+                           'No need to modify your usual outdoor activities unless you experience symptoms such as coughing and throat irritation.', 
+                           'Consider reducing or rescheduling strenuous activities outdoors if you experience symptoms such as coughing and throat irritation.',
+                           'Reduce or reschedule strenuous activities outdoors, especially if you experience symptoms such as coughing and throat irritation.']
+}
+health_messages_df = pd.DataFrame(health_messages_dict)
+# health_messages_df.set_index('Health Risk', inplace=True)
+# health_messages_df['At Risk Population'] = health_messages_df['At Risk Population'].str.wrap(20)
+# health_messages_df['General Population'] = health_messages_df['General Population'].str.wrap(20)
+# health_messages_df.set_index('Health Risk', inplace=True)
+health_messages_df.style.hide(axis=0)
+   
+# with col[0]:
+#     # st.dataframe(health_messages_df[health_messages_df['Health Risk'] == health_risk], use_container_width=True, hide_index=True)
+#     st.dataframe(health_messages_df, use_container_width=True, hide_index=True)
 
-
-
+with col[0]:
+    st.table(health_messages_df[health_messages_df['Health Risk'] == health_risk])
+    #st.table(health_messages_df)
+             #, use_container_width=True, hide_index=True)
