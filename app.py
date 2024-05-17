@@ -1,13 +1,14 @@
+import os
+
 import streamlit as st
+from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
 import psycopg2
-import os
 from dotenv import load_dotenv
 import plotly.express as px
 
 from db_pull import database_pull
 from aq_index import calculate_AQHI
-from streamlit_extras.metric_cards import style_metric_cards
 
 # Loading hidden environment variables
 load_dotenv()
@@ -38,22 +39,13 @@ selected_pol = st.selectbox('Select a pollutant', pol_list, index=1)
 df_selected_pol = pol_df[pol_df.parameter == selected_pol]
 selected_unit = str(df_selected_pol.unit.unique())
 
-# with st.sidebar:
-#     st.title("Air Quality Dashboard 😶‍🌫️")
-    
-#     pol_list = list(pol_df.parameter.unique())
-    
-#     selected_pol = st.selectbox('Select a pollutant', pol_list, index=1)
-#     df_selected_pol = pol_df[pol_df.parameter == selected_pol]
-#     selected_unit = str(df_selected_pol.unit.unique())
-
-# Setup time filter
-timeframe_list = ['Past week', 'Past 3 days', 'Past 24 hours']
-selected_timeframe = st.selectbox("Select a timeframe", timeframe_list, index=1)
-if selected_timeframe == 'Past week':
-    df_selected_pol = df_selected_pol
-if selected_timeframe == 'Past 3 days':
-    df_selected_pol = 
+# # Setup time filter
+# timeframe_list = ['Past week', 'Past 3 days', 'Past 24 hours']
+# selected_timeframe = st.selectbox("Select a timeframe", timeframe_list, index=1)
+# if selected_timeframe == 'Past week':
+#     df_selected_pol = df_selected_pol
+# if selected_timeframe == 'Past 3 days':
+#     df_selected_pol = 
     
 
 # air quality concentration chart over time
@@ -76,16 +68,7 @@ with col[0]:
     st.markdown('### Past Week')
     st.plotly_chart(fig_line, use_container_width=True, width = 1000, height=500)
 
-# # Add current air quality index for selected pollutant
-# with col[1]:
-#     st.metric(label='Air Quality Index', )
-
-# if selected_pol = "Ozone (O3)":
-#     if df_selected_pol.iloc[1, 2] > 5:
-#         aqi = 'Low'
-# elif selected_pol = "Nitrogen dioxide (NO2)":
-    
-# else:
+# Add current air quality index for selected pollutant
 current_no2 = pol_df[pol_df.parameter == 'Nitrogen dioxide (NO2)'].iloc[0]['value']
 current_o3 = pol_df[pol_df.parameter == 'Ozone (O3)'].iloc[0]['value']
 current_pm25 = pol_df[pol_df.parameter == 'Particulate matter (PM2.5)'].iloc[0]['value']
@@ -125,6 +108,9 @@ elif AQHI > 10:
 
 # Populate second column with metrics
 with col[1]:
+    # second column header
+    st.header("Current Measurements")
+    # selected pollutant - current concentration
     if selected_pol == "Particulate matter (PM2.5)":
         display_text = "PM2.5"
         display_pol = current_pm25
@@ -138,14 +124,11 @@ with col[1]:
         display_pol = current_no2
         display_unit = "ppb"
     st.metric(label=f"Current {display_text} concentration:", value=f"{display_pol} {display_unit}")
-    style_metric_cards(border_left_color="#FFFFFF", background_color="#DCDCDC")
     
-with col[1]:  
+    # current AQHI
     st.metric(label="Air Quality Health Index (AQHI)", value=AQHI)
+    # current health risk
     st.metric(label="Health Risk", value=health_risk)
-    # txt_box = st.empty()
-    # txt = f'Health Risk: {health_risk}'
-    # txt_box.text_area("Logging: ",txt, height = 500)
     style_metric_cards(border_left_color=health_color)
     
 # Creating dataframe with health messages
