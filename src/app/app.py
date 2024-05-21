@@ -7,12 +7,12 @@ import psycopg2
 from dotenv import load_dotenv
 import plotly.express as px
 
-from db_pull import database_pull
-from aq_index import calculate_AQHI
+from src.data.database.db_pull import database_pull
+from src.app.aq_index import calculate_AQHI
 
 # Loading hidden environment variables
 load_dotenv()
-API_KEY         =   os.getenv("API_KEY")
+API_KEY = os.getenv("API_KEY")
 DB_NAME         =   os.getenv("DB_NAME")
 DB_USERNAME     =   os.getenv("DB_USERNAME")
 DB_PASSWORD     =   os.getenv("DB_PASSWORD")
@@ -52,12 +52,12 @@ selected_unit = str(df_selected_pol.unit.unique())
 y_axis_name = 'Concentration' + ' ' + '(' + selected_unit + ')'
 
 fig_line = px.line(df_selected_pol,
-        x='datetime',
-        y='value',
-        labels={'value': y_axis_name,
-                'datetime': 'Date'},
-        width=1000,
-        height=500)
+                   x='datetime',
+                   y='value',
+                   labels={'value': y_axis_name,
+                           'datetime': 'Date'},
+                   width=1000,
+                   height=500)
 # fig_line.update_traces(patch=)
 
 # Dashboard layout

@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from dotenv import load_dotenv
-from database_alc import get_connection
+from src.data.database.database_alc import get_connection
 
 def database_pull(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME):

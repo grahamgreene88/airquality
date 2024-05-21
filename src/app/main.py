@@ -9,19 +9,19 @@ from sqlalchemy import create_engine
 
 # Importing custom scripts
 from logger import config_logger
-from api_pull import pull
-from clean import clean_df
-from database import create_table, insert_data
-from database_alc import get_connection
+from src.data.api.api_pull import pull
+from src.data.api.clean import clean_df
+# from src.data.database.database import create_table, insert_data
+from src.data.database.database_alc import get_connection
 
 # Loading hidden environment variables
 load_dotenv()
-API_KEY         =   os.getenv("API_KEY")
-DB_NAME         =   os.getenv("DB_NAME")
-DB_USERNAME     =   os.getenv("DB_USERNAME")
-DB_PASSWORD     =   os.getenv("DB_PASSWORD")
-DB_HOST         =   os.getenv("DB_HOST")
-DB_PORT         =   os.getenv("DB_PORT")
+API_KEY = os.getenv("API_KEY")
+DB_NAME = os.getenv("DB_NAME")
+DB_USERNAME = os.getenv("DB_USERNAME")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
 
 # Configure logging
 config_logger()
