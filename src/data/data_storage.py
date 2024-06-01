@@ -1,12 +1,23 @@
+from sqlalchemy import create_engine
+import psycopg2
+
 import pandas as pd
 import os
 from dotenv import load_dotenv
-from src.data.database.database_alc import get_connection
 
-def database_pull(DB_USERNAME, DB_PASSWORD,
+def get_db_connection(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME):
+    return create_engine(
+        url="postgresql://{0}:{1}@{2}:{3}/{4}".format(
+            DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+        )
+    )
+    
+
+
+def get_db_data(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME):
     # Connect to postgresql database
-    engine = get_connection(DB_USERNAME, DB_PASSWORD,
+    engine = get_db_connection(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME)
     
     # Query for air quality data from posgtreSQL

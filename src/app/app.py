@@ -1,13 +1,18 @@
 import os
+import sys
 
 import streamlit as st
 from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
-import psycopg2
 from dotenv import load_dotenv
 import plotly.express as px
 
-from src.data.database.db_pull import database_pull
+# Add the project root directory to the Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+    
+from src.data.data_storage import get_db_data
 from src.app.aq_index import calculate_AQHI
 
 # Loading hidden environment variables
@@ -19,13 +24,13 @@ DB_PASSWORD     =   os.getenv("DB_PASSWORD")
 DB_HOST         =   os.getenv("DB_HOST")
 DB_PORT         =   os.getenv("DB_PORT")
 
-pol_df = database_pull(DB_USERNAME, DB_PASSWORD,
+pol_df = get_db_data(DB_USERNAME, DB_PASSWORD,
                         DB_HOST, DB_PORT, DB_NAME)
 
 # Set up streamlit dashboard
 st.set_page_config(
-    page_title = "Air Quality Dashboard",
-    page_icon =  '😶‍🌫️',
+    page_title="Air Quality Dashboard",
+    page_icon='😶‍🌫️',
     layout="wide",
  #   initial_sidebar_state="expanded")
 )
