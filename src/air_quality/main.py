@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
 # Importing custom scripts
-from logger import config_logger
 from data.api_data import get_api_data
 from data.api_data import clean_api_data
 # from src.data.database.database import create_table, insert_data
@@ -26,9 +25,7 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 
 def main():
-    # Configure logging
-    config_logger()
-
+    
     # Perform API pull
     df = get_api_data(API_KEY)
 
