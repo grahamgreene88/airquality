@@ -1,7 +1,6 @@
 import requests
 import json
 import pandas as pd
-import logging
 from requests import HTTPError, Timeout, RequestException
 from datetime import datetime, timedelta
 from urllib.parse import quote
