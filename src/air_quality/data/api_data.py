@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from urllib.parse import quote
 
 def get_api_data(API_KEY):
-    """This function pulls data from the OpenAQ API to obtain the pollutant, value, update time, and unit
+    """This function pulls data from the OpenAQ API to obtain air quality data for Downtown Ottawa
     for the last seven days.
     
     
@@ -14,7 +14,7 @@ def get_api_data(API_KEY):
         API_KEY from .env file.
 
     Returns:
-        Dataframe with 4 columns and 2 rows. One row for each pollutant.
+        Dataframe with 15 columns and however many records (as rows) occured in the past 7 days.
         
     Raises:
         HTTPError, Timeout and RequestException
@@ -43,13 +43,16 @@ def get_api_data(API_KEY):
         response.raise_for_status()
     
     except HTTPError as http_err:
-        logger.error(f"HTTP error occurred: {http_err}")
+        raise http_err
+        # logger.error(f"HTTP error occurred: {http_err}")
         
-    except Timeout:
-        logger.error("Request timed out after 15 seconds.")
+    except Timeout as timeout_err:
+        raise timeout_err
+        # logger.error("Request timed out after 15 seconds.")
         
     except RequestException as request_err:
-        logger.error("Request error occurred: {request_err}")
+        raise request_err
+        # logger.error("Request error occurred: {request_err}")
 
     aq_data = json.loads(response.text)
     aq_df = pd.json_normalize(aq_data['results'])
