@@ -96,16 +96,60 @@ def expected_api_df():
     df.drop(df.index, inplace=True)
     del df
     
-@patch('src.air_quality.data.api_data.requests.get')
+@patch('src.air_quality.data.api_data.requests.Session.get')
 def test_get_api_data_success(mock_get, expected_api_df):
     """Tests a successful API call and the resulting dataframe that is returned."""
     # Set status code of mock response to successful HTTP request
     mock_get.return_value.status_code = 200
     # Set content of mock JSON response to mock api response
     mock_get.return_value.json.return_value = mock_api_response
+    mock_get.return_value.text = json.dumps(mock_api_response)
     df = get_api_data('fake_key')
     # Comparing df from mock response with expected df
     assert_frame_equal(df, expected_api_df)
+    
+@patch('src.air_quality.data.api_data.requests.Session.get')
+def test_get_api_data_http_error(mock_get):
+    """Ensure function properly raises HTTP errors."""
+    mock_get.side_effect = HTTPError("HTTP error has occurred")
+    with pytest.raises(HTTPError, match="HTTP error has occurred"):
+        get_api_data('fake_key')
 
+@patch('src.air_quality.data.api_data.requests.Session.get')
+def test_get_api_data_request_exception(mock_get):
+    """Ensure function properly raises request exception errors."""
+    mock_get.side_effect = RequestException("Request exception error has occurred")
+    with pytest.raises(RequestException, match="Request exception error has occurred"):
+        get_api_data('fake_key')
     
+@patch('src.air_quality.data.api_data.requests.Session.get')
+def test_get_api_data_timeout_error(mock_get):
+    """Ensure function properly raises timeout errors."""
+    mock_get.side_effect = Timeout("Timeout error has occurred")
+    with pytest.raises(Timeout, match="Timeout error has occurred"):
+        get_api_data('fake_key')
+        
+@patch('src.air_quality.data.api_data.requests.Session.get')
+def test_get_api_data_empty_response(mock_get):
+    """Tests ability to handle empty API response."""
+    # Set status code of mock response to successful HTTP request
+    mock_get.return_value.status_code = 200
+    # Set content of mock JSON response to empty results list
+    mock_get.return_value.json.return_value = {"results": []}
+    # Set text attribute to JSON string of empty response
+    mock_get.return_value.text = json.dumps({"results": []})
+    # Calling function
+    df = get_api_data('fake_key')
+    # Checking if returned dataframe is empty
+    assert df.empty
     
+@patch('src.air_quality.data.api_data.requests.Session.get')
+def test_get_api_data_invalid_json(mock_get):
+    """Ensure proper handling of invalid JSON response from API."""
+    # Set status code of mock response to successful HTTP request
+    mock_get.return_value.status_code = 200
+    # Set text attribute to invalid JSON string
+    mock_get.return_value.text = "INVALID_JSON"
+    # Ensure JSONDecodeError is properly raised
+    with pytest.raises(json.JSONDecodeError):
+        get_api_data('fake_key')
