@@ -1,7 +1,7 @@
 import pandas as pd
 import psycopg2
 
-from src.air_quality.data.get_db_connect import get_db_connect
+from air_quality.data.get_db_connect import get_db_connect
 
 
 def get_db_data(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME):
