@@ -6,7 +6,7 @@ from requests import HTTPError, Timeout, RequestException
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from src.air_quality.data.api_data import get_api_data
+from src.air_quality.data.get_api_data import get_api_data
 
 # Mock API response from a successul API call
 mock_api_response = {
