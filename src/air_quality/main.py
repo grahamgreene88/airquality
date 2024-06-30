@@ -10,9 +10,9 @@ import requests
 from sqlalchemy import create_engine
 
 # Importing custom scripts
-from data.clean_api_data import clean_api_data
-from data.get_api_data import get_api_data
-from data.get_db_connect import get_db_connect
+from src.air_quality.data.clean_api_data import clean_api_data
+from src.air_quality.data.get_api_data import get_api_data
+from src.air_quality.data.get_db_connect import get_db_connect
 
 
 # Loading hidden environment variables

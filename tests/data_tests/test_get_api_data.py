@@ -117,7 +117,7 @@ def expected_api_df():
     del df
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_success(mock_get, expected_api_df):
     """Tests a successful API call and the resulting dataframe that is returned."""
     # Set status code of mock response to successful HTTP request
@@ -130,7 +130,7 @@ def test_get_api_data_success(mock_get, expected_api_df):
     assert_frame_equal(df, expected_api_df)
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_http_error(mock_get):
     """Ensure function properly raises HTTP errors."""
     mock_get.side_effect = HTTPError("HTTP error has occurred")
@@ -138,7 +138,7 @@ def test_get_api_data_http_error(mock_get):
         get_api_data("fake_key")
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_request_exception(mock_get):
     """Ensure function properly raises request exception errors."""
     mock_get.side_effect = RequestException("Request exception error has occurred")
@@ -146,7 +146,7 @@ def test_get_api_data_request_exception(mock_get):
         get_api_data("fake_key")
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_timeout_error(mock_get):
     """Ensure function properly raises timeout errors."""
     mock_get.side_effect = Timeout("Timeout error has occurred")
@@ -154,7 +154,7 @@ def test_get_api_data_timeout_error(mock_get):
         get_api_data("fake_key")
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_empty_response(mock_get):
     """Tests ability to handle empty API response."""
     # Set status code of mock response to successful HTTP request
@@ -169,7 +169,7 @@ def test_get_api_data_empty_response(mock_get):
     assert df.empty
 
 
-@patch("src.air_quality.data.api_data.requests.Session.get")
+@patch("src.air_quality.data.get_api_data.requests.Session.get")
 def test_get_api_data_invalid_json(mock_get):
     """Ensure proper handling of invalid JSON response from API."""
     # Set status code of mock response to successful HTTP request

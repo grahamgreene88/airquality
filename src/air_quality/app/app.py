@@ -7,13 +7,18 @@ import streamlit as st
 from dotenv import load_dotenv
 from streamlit_extras.metric_cards import style_metric_cards
 
-# Add the project root directory to the Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
-if project_root not in sys.path:
-    sys.path.append(project_root)
 
-from air_quality.app.aq_index import calculate_AQHI
-from air_quality.data.get_db_data import get_db_data
+# function to add the project root directory to the Python path
+def add_project_root_to_path():
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+    if project_root not in sys.path:
+        sys.path.append(project_root)
+
+
+add_project_root_to_path()
+
+from src.air_quality.app.aq_index import calculate_AQHI
+from src.air_quality.data.get_db_data import get_db_data
 
 # Loading hidden environment variables
 load_dotenv()
