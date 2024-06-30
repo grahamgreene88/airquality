@@ -1,19 +1,19 @@
 import os
 import sys
 
-import streamlit as st
-from streamlit_extras.metric_cards import style_metric_cards
 import pandas as pd
-from dotenv import load_dotenv
 import plotly.express as px
+import streamlit as st
+from dotenv import load_dotenv
+from streamlit_extras.metric_cards import style_metric_cards
 
 # Add the project root directory to the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-from air_quality.data.get_db_data import get_db_data
 from air_quality.app.aq_index import calculate_AQHI
+from air_quality.data.get_db_data import get_db_data
 
 # Loading hidden environment variables
 load_dotenv()

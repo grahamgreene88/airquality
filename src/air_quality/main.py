@@ -1,20 +1,19 @@
-import requests
 import json
-import pandas as pd
 import logging
 import os
-import psycopg2
+import subprocess
+
 from dotenv import load_dotenv
+import pandas as pd
+import psycopg2
+import requests
 from sqlalchemy import create_engine
 
 # Importing custom scripts
-from data.get_api_data import get_api_data
 from data.clean_api_data import clean_api_data
-
-# from src.data.database.database import create_table, insert_data
+from data.get_api_data import get_api_data
 from data.get_db_connect import get_db_connect
 
-import subprocess
 
 # Loading hidden environment variables
 load_dotenv()
