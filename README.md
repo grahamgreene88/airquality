@@ -1,0 +1,1 @@
+This repository contains the code for an end-to-end air quality monitoring dashboard. The air quality data is pulled from an API at regular intervals and stored in a local PostgreSQL database. At this regular interval, the updated data is then sent to a streamlit dahsboard.
