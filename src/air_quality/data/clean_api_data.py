@@ -35,7 +35,13 @@ def clean_api_data(df):
         }
     )
     # Changing column name to datetime
-    small_df = small_df.rename(columns={"date.local": "datetime"})
+    small_df = small_df.rename(
+        columns={
+            "date.local": "datetime",
+            "coordinates.latitude": "coordinates_latitude",
+            "coordinates.longitude": "coordinates_longitude",
+        }
+    )
     # Changing datetime column to datetime data type
     small_df["datetime"] = pd.to_datetime(small_df["datetime"])
     return small_df

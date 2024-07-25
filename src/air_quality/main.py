@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from data.clean_api_data import clean_api_data
 from data.get_api_data import get_api_data
 from data.get_db_connect import get_db_connect
-
+from data.save_api_data import create_table, insert_data
 
 # Loading hidden environment variables
 load_dotenv()
@@ -31,13 +31,16 @@ def main():
     df = get_api_data(API_KEY)
 
     # Clean pulled dataframe
-    final_df = clean_api_data(df)
+    clean_df = clean_api_data(df)
 
     # Connect to postgresql database
-    engine = get_db_connect(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
+    db_conn = get_db_connect(DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
 
-    # Write data to table in postgresql database
-    final_df.to_sql("air_quality", engine, if_exists="replace", index=False)
+    # Create air_quality table if it doesn't exist
+    create_table(db_conn)
+
+    # Save new air quality api data to postgress database
+    insert_data(clean_df, db_conn)
 
     # Possible way to run streamlit app
     # construct app path to streamlit app
